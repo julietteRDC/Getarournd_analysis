@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GetAround Pricing API - Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: white;
+            color: #667eea;
+            padding: 40px 20px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .section {
+            background: white;
+            padding: 30px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        h3 {
+            color: #764ba2;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .endpoint {
+            background: #f8f9fa;
+            padding: 15px;
+            border-left: 4px solid #667eea;
+            margin: 15px 0;
+        }
+        
+        .method {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .post {
+            background: #28a745;
+            color: white;
+        }
+        
+        .get {
+            background: #007bff;
+            color: white;
+        }
+        
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        
+        pre code {
+            background: none;
+            color: inherit;
+            padding: 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+        
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>GetAround Pricing API</h1>
+            <p class="subtitle">Documentation de l'API de prédiction de prix de location</p>
+        </header>
+
+        <div class="section">
+            <h2>Introduction</h2>
+            <p>
+                Cette API permet de prédire le prix de location journalier d'un véhicule GetAround 
+                à partir de ses caractéristiques. Elle utilise un modèle de Machine Learning entraîné 
+                sur des données historiques.
+            </p>
+            <p style="margin-top: 15px;">
+                <strong>URL de base :</strong> <code>https://your-url.com</code>
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>Endpoints disponibles</h2>
+            
+            <div class="endpoint">
+                <h3>
+                    <span class="method post">POST</span>
+                    <code>/predict</code>
+                </h3>
+                <p><strong>Description :</strong> Prédire le prix de location à partir de features brutes (format liste).</p>
+                
+                <h4>Input (JSON) :</h4>
+                <pre><code>{
+  "input": [
+    [model_key, mileage, engine_power, fuel, paint_color, car_type, 
+     private_parking_available, has_gps, has_air_conditioning, 
+     automatic_car, has_getaround_connect, has_speed_regulator, winter_tires]
+  ]
+}</code></pre>
+
+                <h4>Output (JSON) :</h4>
+                <pre><code>{
+  "prediction": [120, 150]
+}</code></pre>
+
+                <h4>Exemple avec curl :</h4>
+                <pre><code>curl -X POST "https://your-url.com/predict" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "input": [
+      ["Citroën", 140411, 100, "diesel", "black", "convertible", 
+       true, true, false, false, true, true, true]
+    ]
+  }'</code></pre>
+
+                <h4>Exemple avec Python :</h4>
+                <pre><code>import requests
+
+response = requests.post("https://your-url.com/predict", json={
+    "input": [
+        ["Citroën", 140411, 100, "diesel", "black", "convertible", 
+         True, True, False, False, True, True, True]
+    ]
+})
+print(response.json())</code></pre>
+            </div>
+
+            <div class="endpoint">
+                <h3>
+                    <span class="method post">POST</span>
+                    <code>/predict_features</code>
+                </h3>
+                <p><strong>Description :</strong> Prédire le prix avec des features nommées (plus lisible).</p>
+                
+                <h4>Input (JSON) :</h4>
+                <pre><code>[
+  {
+    "model_key": "Citroën",
+    "mileage": 140411,
+    "engine_power": 100,
+    "fuel": "diesel",
+    "paint_color": "black",
+    "car_type": "convertible",
+    "private_parking_available": true,
+    "has_gps": true,
+    "has_air_conditioning": false,
+    "automatic_car": false,
+    "has_getaround_connect": true,
+    "has_speed_regulator": true,
+    "winter_tires": true
+  }
+]</code></pre>
+
+                <h4>Output (JSON) :</h4>
+                <pre><code>{
+  "prediction": [106]
+}</code></pre>
+            </div>
+
+            <div class="endpoint">
+                <h3>
+                    <span class="method get">GET</span>
+                    <code>/</code>
+                </h3>
+                <p><strong>Description :</strong> Page d'accueil avec la liste des endpoints.</p>
+            </div>
+
+            <div class="endpoint">
+                <h3>
+                    <span class="method get">GET</span>
+                    <code>/health</code>
+                </h3>
+                <p><strong>Description :</strong> Vérifier l'état de santé de l'API.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Features requises</h2>
+            <p>Voici la liste des 13 features attendues par le modèle, dans l'ordre :</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Feature</th>
+                        <th>Type</th>
+                        <th>Exemple</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>model_key</td>
+                        <td>string</td>
+                        <td>"Citroën"</td>
+                        <td>Marque du véhicule</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>mileage</td>
+                        <td>int</td>
+                        <td>140411</td>
+                        <td>Kilométrage</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>engine_power</td>
+                        <td>int</td>
+                        <td>100</td>
+                        <td>Puissance moteur</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>fuel</td>
+                        <td>string</td>
+                        <td>"diesel"</td>
+                        <td>Type de carburant (diesel, petrol, hybrid_petrol, electro)</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>paint_color</td>
+                        <td>string</td>
+                        <td>"black"</td>
+                        <td>Couleur de la voiture</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>car_type</td>
+                        <td>string</td>
+                        <td>"convertible"</td>
+                        <td>Type de voiture (sedan, suv, estate, hatchback, etc.)</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>private_parking_available</td>
+                        <td>bool</td>
+                        <td>true</td>
+                        <td>Parking privé disponible</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>has_gps</td>
+                        <td>bool</td>
+                        <td>true</td>
+                        <td>GPS disponible</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>has_air_conditioning</td>
+                        <td>bool</td>
+                        <td>false</td>
+                        <td>Climatisation disponible</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>automatic_car</td>
+                        <td>bool</td>
+                        <td>false</td>
+                        <td>Boîte automatique</td>
+                    </tr>
+                    <tr>
+                        <td>11</td>
+                        <td>has_getaround_connect</td>
+                        <td>bool</td>
+                        <td>true</td>
+                        <td>GetAround Connect disponible</td>
+                    </tr>
+                    <tr>
+                        <td>12</td>
+                        <td>has_speed_regulator</td>
+                        <td>bool</td>
+                        <td>true</td>
+                        <td>Régulateur de vitesse</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>winter_tires</td>
+                        <td>bool</td>
+                        <td>true</td>
+                        <td>Pneus hiver</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>Gestion des erreurs</h2>
+            
+            <h3>Code 400 - Bad Request</h3>
+            <p>Retourné si les données d'entrée sont invalides.</p>
+            <pre><code>{
+  "detail": "Erreur lors de la prédiction: ..."
+}</code></pre>
+
+            <h3>Code 500 - Internal Server Error</h3>
+            <p>Retourné en cas d'erreur serveur.</p>
+
+            <div class="note">
+                <strong>Note :</strong> L'API suppose que les inputs sont toujours bien formatés. 
+                La gestion d'erreurs avancée peut être ajoutée en bonus.
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Documentation interactive</h2>
+            <p>
+                FastAPI génère automatiquement une documentation interactive Swagger UI accessible à :
+            </p>
+            <p style="margin-top: 10px;">
+                <strong>URL :</strong> <code>https://your-url.com/docs</code>
+            </p>
+            <p style="margin-top: 10px;">
+                Cette interface vous permet de tester l'API directement depuis votre navigateur.
+            </p>
+        </div>
+
+        <footer>
+            <p>GetAround Pricing API v1.0.0 - 2024</p>
+            <p>Développé avec FastAPI et scikit-learn</p>
+        </footer>
+    </div>
+</body>
+</html>
